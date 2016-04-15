@@ -12,11 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ameron32.apps.somalibible.R;
+import com.ameron32.apps.somalibible.frmk.BibleProvider;
 import com.ameron32.apps.somalibible.frmk.BibleReceiver;
 import com.ameron32.apps.somalibible.frmk.IBible;
 import com.ameron32.apps.somalibible.frmk.NavigationListener;
 import com.ameron32.apps.somalibible.frmk.NavigationRequestor;
 import com.ameron32.apps.somalibible.frmk.OnItemClickListener;
+import com.ameron32.apps.somalibible.ui.book.BookAdapter;
 
 
 /**
@@ -39,8 +41,8 @@ public class ChapterSelectionFragment extends Fragment
     return f;
   }
 
-  IBible bible;
-  RecyclerView chapterGrid;
+  private IBible bible;
+  private RecyclerView chapterGrid;
 
   public ChapterSelectionFragment() {
     // Required empty public constructor
@@ -55,6 +57,7 @@ public class ChapterSelectionFragment extends Fragment
       // restore args
       book = args.getInt(BOOK_KEY);
     }
+    bibleProvider.requestBible(this);
   }
 
   @Override
@@ -69,16 +72,25 @@ public class ChapterSelectionFragment extends Fragment
     super.onViewCreated(view, savedInstanceState);
     chapterGrid = (RecyclerView) view.findViewById(R.id.chapter_grid);
     chapterGrid.setLayoutManager(new GridLayoutManager(view.getContext(), 5));
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    bibleProvider.requestBible(this);
     chapterGrid.setAdapter(new ChapterAdapter(bible, book, this));
   }
 
   NavigationListener navigationListener;
+  BibleProvider bibleProvider;
 
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
-    if (context instanceof NavigationListener) {
+    if (context instanceof NavigationListener
+        && context instanceof BibleProvider) {
       navigationListener = (NavigationListener) context;
+      bibleProvider = (BibleProvider) context;
     } else {
       throw new IllegalStateException("activity must implement " + NavigationListener.class.getSimpleName());
     }
@@ -88,7 +100,10 @@ public class ChapterSelectionFragment extends Fragment
   public void onDetach() {
     super.onDetach();
     navigationListener = null;
+    bibleProvider = null;
   }
+
+
 
 
   @Override

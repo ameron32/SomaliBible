@@ -11,15 +11,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ameron32.apps.somalibible.R;
+import com.ameron32.apps.somalibible.frmk.BibleProvider;
+import com.ameron32.apps.somalibible.frmk.BibleReceiver;
+import com.ameron32.apps.somalibible.frmk.IBible;
 import com.ameron32.apps.somalibible.frmk.NavigationListener;
 import com.ameron32.apps.somalibible.frmk.NavigationRequestor;
+import com.ameron32.apps.somalibible.ui.book.BookAdapter;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ChapterDisplayFragment extends Fragment
-    implements NavigationRequestor {
+    implements NavigationRequestor, BibleReceiver {
 
 
   private static final String BOOK_KEY = "bookOrdinal";
@@ -27,6 +31,7 @@ public class ChapterDisplayFragment extends Fragment
 
   private int book;
   private int chapter;
+  private IBible bible;
 
   public static ChapterDisplayFragment newInstance(int bookOrdinal, int chapter) {
     ChapterDisplayFragment f = new ChapterDisplayFragment();
@@ -51,6 +56,7 @@ public class ChapterDisplayFragment extends Fragment
       book = args.getInt(BOOK_KEY);
       chapter = args.getInt(CHAPTER_KEY);
     }
+    bibleProvider.requestBible(this);
   }
 
   @Override
@@ -67,13 +73,22 @@ public class ChapterDisplayFragment extends Fragment
     text.setText("Book: " + book + " and Chapter: " + chapter);
   }
 
+  @Override
+  public void onResume() {
+    super.onResume();
+    bibleProvider.requestBible(this);
+  }
+
   NavigationListener navigationListener;
+  BibleProvider bibleProvider;
 
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
-    if (context instanceof NavigationListener) {
+    if (context instanceof NavigationListener
+        && context instanceof BibleProvider) {
       navigationListener = (NavigationListener) context;
+      bibleProvider = (BibleProvider) context;
     } else {
       throw new IllegalStateException("activity must implement " + NavigationListener.class.getSimpleName());
     }
@@ -83,11 +98,17 @@ public class ChapterDisplayFragment extends Fragment
   public void onDetach() {
     super.onDetach();
     navigationListener = null;
+    bibleProvider = null;
   }
 
 
   @Override
   public String getRequestorId() {
     return "2";
+  }
+
+  @Override
+  public void passBible(IBible bible) {
+    this.bible = bible;
   }
 }

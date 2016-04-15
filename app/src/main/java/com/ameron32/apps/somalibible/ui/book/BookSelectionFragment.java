@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ameron32.apps.somalibible.R;
+import com.ameron32.apps.somalibible.frmk.BibleProvider;
 import com.ameron32.apps.somalibible.frmk.BibleReceiver;
 import com.ameron32.apps.somalibible.frmk.IBible;
 import com.ameron32.apps.somalibible.frmk.NavigationListener;
@@ -30,13 +31,23 @@ public class BookSelectionFragment extends Fragment
     return new BookSelectionFragment();
   }
 
-  IBible bible;
-  RecyclerView bookGrid;
+  private IBible bible;
+  private RecyclerView bookGrid;
 
   public BookSelectionFragment() {
     // Required empty public constructor
   }
 
+
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    if (getArguments() != null) {
+      final Bundle args = getArguments();
+      // restore args
+
+    }
+  }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,17 +60,25 @@ public class BookSelectionFragment extends Fragment
     super.onViewCreated(view, savedInstanceState);
     bookGrid = (RecyclerView) view.findViewById(R.id.book_grid);
     bookGrid.setLayoutManager(new GridLayoutManager(view.getContext(), 5));
+  }
+
+  @Override
+  public void onResume() {
+    super.onResume();
+    bibleProvider.requestBible(this);
     bookGrid.setAdapter(new BookAdapter(bible, this));
   }
 
-
   NavigationListener navigationListener;
+  BibleProvider bibleProvider;
 
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
-    if (context instanceof NavigationListener) {
+    if (context instanceof NavigationListener
+        && context instanceof BibleProvider) {
       navigationListener = (NavigationListener) context;
+      bibleProvider = (BibleProvider) context;
     } else {
       throw new IllegalStateException("activity must implement " + NavigationListener.class.getSimpleName());
     }
@@ -69,6 +88,7 @@ public class BookSelectionFragment extends Fragment
   public void onDetach() {
     super.onDetach();
     navigationListener = null;
+    bibleProvider = null;
   }
 
 

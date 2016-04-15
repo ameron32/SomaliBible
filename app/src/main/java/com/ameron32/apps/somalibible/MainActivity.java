@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.ameron32.apps.somalibible.bible.FakeBible;
+import com.ameron32.apps.somalibible.frmk.BibleProvider;
 import com.ameron32.apps.somalibible.ui.book.BookSelectionFragment;
 import com.ameron32.apps.somalibible.ui.chapter.ChapterSelectionFragment;
 import com.ameron32.apps.somalibible.frmk.BibleReceiver;
@@ -19,7 +20,7 @@ import com.ameron32.apps.somalibible.ui.verse.ChapterDisplayFragment;
 
 
 public class MainActivity extends AppCompatActivity
-  implements NavigationListener {
+  implements NavigationListener, BibleProvider {
 
 
   IBible bible;
@@ -34,18 +35,10 @@ public class MainActivity extends AppCompatActivity
     bible = new FakeBible();
     if (savedInstanceState == null) {
       swapFragment(BookSelectionFragment.newInstance(), false);
-    } else {
-      Fragment fragment = getSupportFragmentManager().findFragmentByTag("primary");
-      if (fragment instanceof BibleReceiver) {
-        ((BibleReceiver) fragment).passBible(bible);
-      }
     }
   }
 
   public void swapFragment(Fragment fragment, boolean addToBackStack) {
-    if (fragment instanceof BibleReceiver) {
-      ((BibleReceiver) fragment).passBible(bible);
-    }
     final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
     ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,
         android.R.anim.slide_in_left, android.R.anim.slide_out_right);
@@ -77,5 +70,10 @@ public class MainActivity extends AppCompatActivity
   @Override
   public void onChapter(int bookOrdinal, int chapter) {
     swapFragment(ChapterDisplayFragment.newInstance(bookOrdinal, chapter), true);
+  }
+
+  @Override
+  public void requestBible(BibleReceiver receiver) {
+    receiver.passBible(bible);
   }
 }
