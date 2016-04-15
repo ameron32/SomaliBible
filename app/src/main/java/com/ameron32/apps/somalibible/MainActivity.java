@@ -32,7 +32,14 @@ public class MainActivity extends AppCompatActivity
     setSupportActionBar(toolbar);
 
     bible = new FakeBible();
-    swapFragment(BookSelectionFragment.newInstance(), false);
+    if (savedInstanceState == null) {
+      swapFragment(BookSelectionFragment.newInstance(), false);
+    } else {
+      Fragment fragment = getSupportFragmentManager().findFragmentByTag("primary");
+      if (fragment instanceof BibleReceiver) {
+        ((BibleReceiver) fragment).passBible(bible);
+      }
+    }
   }
 
   public void swapFragment(Fragment fragment, boolean addToBackStack) {
