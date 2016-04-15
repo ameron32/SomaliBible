@@ -63,7 +63,7 @@ public class ChapterSelectionFragment extends Fragment
     super.onViewCreated(view, savedInstanceState);
     chapterGrid = (RecyclerView) view.findViewById(R.id.chapter_grid);
     chapterGrid.setLayoutManager(new GridLayoutManager(view.getContext(), 5));
-    chapterGrid.setAdapter(new BookAdapter(bible, this));
+    chapterGrid.setAdapter(new ChapterAdapter(bible, book, this));
   }
 
   NavigationListener navigationListener;
