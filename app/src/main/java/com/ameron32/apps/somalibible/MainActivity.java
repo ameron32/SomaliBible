@@ -35,7 +35,8 @@ public class MainActivity extends AppCompatActivity
       ((BibleReceiver) fragment).receiveBible(bible);
     }
     final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-    ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
+    ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,
+        android.R.anim.slide_in_left, android.R.anim.slide_out_right);
     ft.replace(R.id.fragment_container, fragment, "primary");
     if (addToBackStack) {
       ft.addToBackStack(null);
