@@ -1,6 +1,10 @@
-package com.ameron32.apps.somalibible;
+package com.ameron32.apps.somalibible.bible;
+
+import com.ameron32.apps.somalibible.frmk.IBible;
 
 /**
+ * Simply laughable implementation of IBible to enable framework.
+ *
  * Created by klemeilleur on 4/15/2016.
  */
 public class FakeBible implements IBible {

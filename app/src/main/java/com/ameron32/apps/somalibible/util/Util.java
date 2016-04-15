@@ -1,4 +1,4 @@
-package com.ameron32.apps.somalibible;
+package com.ameron32.apps.somalibible.util;
 
 /**
  * Created by klemeilleur on 4/15/2016.

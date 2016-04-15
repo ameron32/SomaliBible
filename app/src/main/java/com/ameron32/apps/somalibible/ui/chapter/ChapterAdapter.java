@@ -1,10 +1,14 @@
-package com.ameron32.apps.somalibible;
+package com.ameron32.apps.somalibible.ui.chapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.ameron32.apps.somalibible.R;
+import com.ameron32.apps.somalibible.frmk.IBible;
+import com.ameron32.apps.somalibible.frmk.OnItemClickListener;
 
 /**
  * Created by klemeilleur on 4/15/2016.

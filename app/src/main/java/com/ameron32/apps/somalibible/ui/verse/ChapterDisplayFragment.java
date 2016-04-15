@@ -1,45 +1,46 @@
-package com.ameron32.apps.somalibible;
+package com.ameron32.apps.somalibible.ui.verse;
 
 
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.ameron32.apps.somalibible.R;
+import com.ameron32.apps.somalibible.frmk.NavigationListener;
+import com.ameron32.apps.somalibible.frmk.NavigationRequestor;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ChapterSelectionFragment extends Fragment
-    implements NavigationRequestor, BibleReceiver, OnItemClickListener {
+public class ChapterDisplayFragment extends Fragment
+    implements NavigationRequestor {
 
 
   private static final String BOOK_KEY = "bookOrdinal";
+  private static final String CHAPTER_KEY = "chapter";
 
   private int book;
+  private int chapter;
 
-  public static ChapterSelectionFragment newInstance(int bookOrdinal) {
-    ChapterSelectionFragment f = new ChapterSelectionFragment();
+  public static ChapterDisplayFragment newInstance(int bookOrdinal, int chapter) {
+    ChapterDisplayFragment f = new ChapterDisplayFragment();
     Bundle args = new Bundle();
     // store args
     args.putInt(BOOK_KEY, bookOrdinal);
+    args.putInt(CHAPTER_KEY, chapter);
     f.setArguments(args);
     return f;
   }
 
-  IBible bible;
-  RecyclerView chapterGrid;
-
-  public ChapterSelectionFragment() {
+  public ChapterDisplayFragment() {
     // Required empty public constructor
   }
-
 
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +49,7 @@ public class ChapterSelectionFragment extends Fragment
       final Bundle args = getArguments();
       // restore args
       book = args.getInt(BOOK_KEY);
+      chapter = args.getInt(CHAPTER_KEY);
     }
   }
 
@@ -55,15 +57,14 @@ public class ChapterSelectionFragment extends Fragment
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_chapter_selection, container, false);
+    return inflater.inflate(R.layout.fragment_chapter_display, container, false);
   }
 
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    chapterGrid = (RecyclerView) view.findViewById(R.id.chapter_grid);
-    chapterGrid.setLayoutManager(new GridLayoutManager(view.getContext(), 5));
-    chapterGrid.setAdapter(new ChapterAdapter(bible, book, this));
+    TextView text = (TextView) view.findViewById(R.id.text);
+    text.setText("Book: " + book + " and Chapter: " + chapter);
   }
 
   NavigationListener navigationListener;
@@ -87,16 +88,6 @@ public class ChapterSelectionFragment extends Fragment
 
   @Override
   public String getRequestorId() {
-    return "1";
-  }
-
-  @Override
-  public void receiveBible(IBible bible) {
-    this.bible = bible;
-  }
-
-  @Override
-  public void onItemClick(int position) {
-    navigationListener.onChapter(book, position);
+    return "2";
   }
 }

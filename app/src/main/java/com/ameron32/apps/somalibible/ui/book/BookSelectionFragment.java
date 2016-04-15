@@ -1,4 +1,4 @@
-package com.ameron32.apps.somalibible;
+package com.ameron32.apps.somalibible.ui.book;
 
 
 import android.content.Context;
@@ -10,6 +10,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.ameron32.apps.somalibible.R;
+import com.ameron32.apps.somalibible.frmk.BibleReceiver;
+import com.ameron32.apps.somalibible.frmk.IBible;
+import com.ameron32.apps.somalibible.frmk.NavigationListener;
+import com.ameron32.apps.somalibible.frmk.NavigationRequestor;
+import com.ameron32.apps.somalibible.frmk.OnItemClickListener;
 
 
 /**
@@ -71,7 +78,7 @@ public class BookSelectionFragment extends Fragment
   }
 
   @Override
-  public void receiveBible(IBible bible) {
+  public void passBible(IBible bible) {
     this.bible = bible;
   }
 

@@ -2,15 +2,20 @@ package com.ameron32.apps.somalibible;
 
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
+
+import com.ameron32.apps.somalibible.bible.FakeBible;
+import com.ameron32.apps.somalibible.ui.book.BookSelectionFragment;
+import com.ameron32.apps.somalibible.ui.chapter.ChapterSelectionFragment;
+import com.ameron32.apps.somalibible.frmk.BibleReceiver;
+import com.ameron32.apps.somalibible.frmk.IBible;
+import com.ameron32.apps.somalibible.frmk.NavigationListener;
+import com.ameron32.apps.somalibible.frmk.NavigationRequestor;
+import com.ameron32.apps.somalibible.util.Util;
+import com.ameron32.apps.somalibible.ui.verse.ChapterDisplayFragment;
 
 
 public class MainActivity extends AppCompatActivity
@@ -32,7 +37,7 @@ public class MainActivity extends AppCompatActivity
 
   public void swapFragment(Fragment fragment, boolean addToBackStack) {
     if (fragment instanceof BibleReceiver) {
-      ((BibleReceiver) fragment).receiveBible(bible);
+      ((BibleReceiver) fragment).passBible(bible);
     }
     final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
     ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left,
