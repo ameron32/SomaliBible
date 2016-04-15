@@ -26,88 +26,21 @@ public class MainActivity extends AppCompatActivity
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-//    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//    fab.setOnClickListener(new View.OnClickListener() {
-//      @Override
-//      public void onClick(View view) {
-//        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//            .setAction("Action", null).show();
-//      }
-//    });
-
     bible = new FakeBible();
-    swapFragment(BookSelectionFragment.class, false);
+    swapFragment(BookSelectionFragment.newInstance(), false);
   }
-
-
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
-//    getMenuInflater().inflate(R.menu.menu_main, menu);
-    return true;
-  }
-
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    // Handle action bar item clicks here. The action bar will
-    // automatically handle clicks on the Home/Up button, so long
-    // as you specify a parent activity in AndroidManifest.xml.
-//    int id = item.getItemId();
-
-    //noinspection SimplifiableIfStatement
-//    if (id == R.id.action_settings) {
-//      return true;
-//    }
-
-    return super.onOptionsItemSelected(item);
-  }
-
 
   public void swapFragment(Fragment fragment, boolean addToBackStack) {
     if (fragment instanceof BibleReceiver) {
       ((BibleReceiver) fragment).receiveBible(bible);
     }
     final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+    ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left);
     ft.replace(R.id.fragment_container, fragment, "primary");
     if (addToBackStack) {
       ft.addToBackStack(null);
     }
-    ft.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
     ft.commit();
-  }
-
-  public void swapFragment(Class<? extends Fragment> fragmentClass, boolean addToBackStack) {
-    try {
-
-      Fragment fragment = fragmentClass.newInstance();
-      swapFragment(fragment, addToBackStack);
-
-    } catch (InstantiationException e) {
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-    }
-  }
-
-  private void swapFragment(int ordinal) {
-    swapFragment(Fragments.values()[ordinal].getFragmentClass(), true);
-  }
-
-  enum Fragments {
-    BookSelection(BookSelectionFragment.class),
-    ChapterSelection(ChapterSelectionFragment.class),
-    ChapterDisplay(ChapterDisplayFragment.class);
-
-    private final Class<? extends Fragment> chapterDisplayFragmentClass;
-
-    Fragments(Class<? extends Fragment> chapterDisplayFragmentClass) {
-      this.chapterDisplayFragmentClass = chapterDisplayFragmentClass;
-    }
-
-    Class<? extends Fragment> getFragmentClass() {
-      return chapterDisplayFragmentClass;
-    }
   }
 
   @Override
@@ -122,20 +55,6 @@ public class MainActivity extends AppCompatActivity
     }
     getSupportFragmentManager().popBackStack();
   }
-
-//  @Override
-//  public void onNext(NavigationRequestor requestor) {
-//    String id = requestor.getRequestorId();
-//    if (!Util.isInteger(id)) {
-//      return;
-//    }
-//    int idNumber = Integer.parseInt(id);
-//    if (idNumber > Fragments.values().length -2) {
-//      return;
-//    }
-//    idNumber++;
-//    swapFragment(idNumber);
-//  }
 
   @Override
   public void onBook(int bookOrdinal) {

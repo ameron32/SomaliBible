@@ -19,6 +19,10 @@ public class BookSelectionFragment extends Fragment
     implements NavigationRequestor, BibleReceiver, OnItemClickListener {
 
 
+  public static BookSelectionFragment newInstance() {
+    return new BookSelectionFragment();
+  }
+
   IBible bible;
   RecyclerView bookGrid;
 
