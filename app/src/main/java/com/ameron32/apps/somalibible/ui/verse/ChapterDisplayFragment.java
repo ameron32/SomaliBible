@@ -78,7 +78,6 @@ public class ChapterDisplayFragment extends Fragment
   public void onResume() {
     super.onResume();
     bibleProvider.requestBible(this);
-    text.setText( getChapterString() );
   }
 
   private String getChapterString() {
@@ -117,5 +116,8 @@ public class ChapterDisplayFragment extends Fragment
   @Override
   public void passBible(IBible bible) {
     this.bible = bible;
+    if (text != null) {
+      text.setText(getChapterString());
+    }
   }
 }

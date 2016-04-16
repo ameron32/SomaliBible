@@ -36,8 +36,10 @@ public class Bible implements IBible
 
 
 
-
-
+    private boolean isLoaded = false;
+    public boolean isLoaded() {
+        return isLoaded;
+    }
 
     public void load(Context c){
 
@@ -49,6 +51,7 @@ public class Bible implements IBible
             }
         }
 
+        isLoaded = true;
     }
 
     private void populateChapterCounts(Context c){

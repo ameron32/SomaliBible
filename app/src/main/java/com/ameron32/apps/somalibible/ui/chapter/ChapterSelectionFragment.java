@@ -78,7 +78,6 @@ public class ChapterSelectionFragment extends Fragment
   public void onResume() {
     super.onResume();
     bibleProvider.requestBible(this);
-    chapterGrid.setAdapter(new ChapterAdapter(bible, book, this));
   }
 
   NavigationListener navigationListener;
@@ -114,6 +113,9 @@ public class ChapterSelectionFragment extends Fragment
   @Override
   public void passBible(IBible bible) {
     this.bible = bible;
+    if (chapterGrid != null) {
+      chapterGrid.setAdapter(new ChapterAdapter(bible, book, this));
+    }
   }
 
   @Override

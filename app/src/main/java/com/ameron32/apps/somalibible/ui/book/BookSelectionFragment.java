@@ -66,7 +66,6 @@ public class BookSelectionFragment extends Fragment
   public void onResume() {
     super.onResume();
     bibleProvider.requestBible(this);
-    bookGrid.setAdapter(new BookAdapter(bible, this));
   }
 
   NavigationListener navigationListener;
@@ -100,6 +99,9 @@ public class BookSelectionFragment extends Fragment
   @Override
   public void passBible(IBible bible) {
     this.bible = bible;
+    if (bookGrid != null) {
+      bookGrid.setAdapter(new BookAdapter(bible, this));
+    }
   }
 
   @Override
