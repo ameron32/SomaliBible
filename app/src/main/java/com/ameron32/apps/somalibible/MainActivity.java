@@ -6,7 +6,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
+import com.ameron32.apps.somalibible.bible.Bible;
 import com.ameron32.apps.somalibible.bible.FakeBible;
 import com.ameron32.apps.somalibible.frmk.BibleProvider;
 import com.ameron32.apps.somalibible.ui.book.BookSelectionFragment;
@@ -32,7 +34,12 @@ public class MainActivity extends AppCompatActivity
     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
-    bible = new FakeBible();
+//    bible = new FakeBible();
+    Log.d("Bible", "Bible loading.");
+    bible = new Bible(getAssets());
+    ((Bible) bible).load(this);
+    Log.d("Bible", "Bible loaded.");
+
     if (savedInstanceState == null) {
       swapFragment(BookSelectionFragment.newInstance(), false);
     }

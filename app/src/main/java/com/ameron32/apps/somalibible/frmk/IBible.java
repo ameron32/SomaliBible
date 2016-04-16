@@ -8,14 +8,14 @@ package com.ameron32.apps.somalibible.frmk;
 public interface IBible {
 
   int getBookCount();
-  int getChapterCount(int book);
-  int getVerseCount(int book, int chapter);
+  int getChapterCount(int bookNumber);
+  int getVerseCount(int bookNumber, int chapter);
 
   void setBookNames(String[] names);
   void setAbbrevs(String[] abbrevs);
 
-  String getBookName(int chapter);
-  String getBookAbbrev(int chapter);
+  String getBookName(int bookNumber);
+  String getBookAbbrev(int bookNumber);
 
   String getChapterVerses(int bookNumber, int chapter);
   String getVerse(int bookNumber, int chapter, int verse);
