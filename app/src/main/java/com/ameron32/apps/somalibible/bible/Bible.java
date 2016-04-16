@@ -132,7 +132,6 @@ public class Bible implements IBible
         return 0;
     }
 
-    @Override
     public void setBookNames(String[] names) {
         // TODO not used
         for (int i=0; i<66; i++){
@@ -209,7 +208,6 @@ public class Bible implements IBible
         chapterNames = names;
     }
 
-    @Override
     public void setAbbrevs(String[] abbrevs) {
         // TODO not used
         for (int i=0; i<66; i++) {

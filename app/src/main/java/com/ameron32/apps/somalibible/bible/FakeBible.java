@@ -24,12 +24,10 @@ public class FakeBible implements IBible {
     return 5;
   }
 
-  @Override
   public void setBookNames(String[] names) {
     return;
   }
 
-  @Override
   public void setAbbrevs(String[] abbrevs) {
     return;
   }

@@ -11,9 +11,6 @@ public interface IBible {
   int getChapterCount(int bookNumber);
   int getVerseCount(int bookNumber, int chapter);
 
-  void setBookNames(String[] names);
-  void setAbbrevs(String[] abbrevs);
-
   String getBookName(int bookNumber);
   String getBookAbbrev(int bookNumber);
 
