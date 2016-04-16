@@ -31,7 +31,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
   @Override
   public void onBindViewHolder(ViewHolder holder, final int position) {
-    holder.text.setText(bible.getChapterName(position)); // TODO tablet v. phone
+    holder.text.setText(bible.getBookName(position)); // TODO tablet v. phone
     holder.itemView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {

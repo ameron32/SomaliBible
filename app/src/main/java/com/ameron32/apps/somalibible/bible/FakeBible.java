@@ -8,6 +8,7 @@ import com.ameron32.apps.somalibible.frmk.IBible;
  * Created by klemeilleur on 4/15/2016.
  */
 public class FakeBible implements IBible {
+
   @Override
   public int getBookCount() {
     return 66;
@@ -24,7 +25,7 @@ public class FakeBible implements IBible {
   }
 
   @Override
-  public void setChapterNames(String[] names) {
+  public void setBookNames(String[] names) {
     return;
   }
 
@@ -34,12 +35,27 @@ public class FakeBible implements IBible {
   }
 
   @Override
-  public String getChapterName(int chapter) {
-    return "NAME";
+  public String getBookName(int chapter) {
+    return "Name";
   }
 
   @Override
-  public String getChapterAbbrev(int chapter) {
-    return "NA.";
+  public String getBookAbbrev(int chapter) {
+    return "Na.";
+  }
+
+  @Override
+  public String getChapterVerses(int bookNumber, int chapter) {
+    return bookNumber +", "+ chapter;
+  }
+
+  @Override
+  public String getVerse(int bookNumber, int chapter, int verse) {
+    return bookNumber +", "+ chapter +", "+ verse;
+  }
+
+  @Override
+  public String getVerses(int bookNumber, int chapter, int... verses) {
+    return bookNumber +", "+ chapter +", "+ verses.length;
   }
 }

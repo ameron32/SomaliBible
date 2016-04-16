@@ -11,10 +11,13 @@ public interface IBible {
   int getChapterCount(int book);
   int getVerseCount(int book, int chapter);
 
-  // TODO bad method name. should be setBookNames()
-  void setChapterNames(String[] names);
+  void setBookNames(String[] names);
   void setAbbrevs(String[] abbrevs);
 
-  String getChapterName(int chapter);
-  String getChapterAbbrev(int chapter);
+  String getBookName(int chapter);
+  String getBookAbbrev(int chapter);
+
+  String getChapterVerses(int bookNumber, int chapter);
+  String getVerse(int bookNumber, int chapter, int verse);
+  String getVerses(int bookNumber, int chapter, int... verses);
 }

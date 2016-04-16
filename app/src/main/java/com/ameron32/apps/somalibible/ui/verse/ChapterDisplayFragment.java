@@ -32,6 +32,7 @@ public class ChapterDisplayFragment extends Fragment
   private int book;
   private int chapter;
   private IBible bible;
+  private TextView text;
 
   public static ChapterDisplayFragment newInstance(int bookOrdinal, int chapter) {
     ChapterDisplayFragment f = new ChapterDisplayFragment();
@@ -69,14 +70,19 @@ public class ChapterDisplayFragment extends Fragment
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    TextView text = (TextView) view.findViewById(R.id.text);
-    text.setText("Book: " + book + " and Chapter: " + chapter);
+    text = (TextView) view.findViewById(R.id.text);
   }
 
   @Override
   public void onResume() {
     super.onResume();
     bibleProvider.requestBible(this);
+    text.setText( getChapterString() );
+  }
+
+  private String getChapterString() {
+    String text = "Book: " + book + " and Chapter: " + chapter + "\n\n";
+    return text + bible.getChapterVerses(book, chapter);
   }
 
   NavigationListener navigationListener;
