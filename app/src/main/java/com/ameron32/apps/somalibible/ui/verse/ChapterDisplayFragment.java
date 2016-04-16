@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.text.Spanned;
+import android.text.SpannedString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,9 +82,8 @@ public class ChapterDisplayFragment extends Fragment
     bibleProvider.requestBible(this);
   }
 
-  private String getChapterString() {
-    String text = "Book: " + book + " and Chapter: " + chapter + "\n\n";
-    return text + Html.fromHtml(bible.getChapterVerses(book, chapter));
+  private Spanned getChapterString() {
+    return Html.fromHtml(bible.getChapterVerses(book, chapter));
   }
 
   NavigationListener navigationListener;
