@@ -2,7 +2,6 @@ package com.ameron32.apps.somalibible.bible;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.text.Html;
 
 import com.ameron32.apps.somalibible.frmk.IBible;
 
@@ -10,7 +9,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Bible implements IBible
@@ -19,15 +17,15 @@ public class Bible implements IBible
     AssetManager am;
     int[] chapterCount;
     String[][]chapters;
-    String[]chapterNames;
-    String[]chapterAbbrevs;
+    String[] bookNames;
+    String[] bookAbbrevs;
 
 
     public Bible(AssetManager am){
         chapterCount = new int[66];
         chapters = new String[66][];
-        chapterNames = new String[66];
-        chapterAbbrevs = new String[66];
+        bookNames = new String[66];
+        bookAbbrevs = new String[66];
         setupBooks();
         this.am = am;
     }
@@ -44,14 +42,14 @@ public class Bible implements IBible
     public void load(Context c){
 
         populateChapterCounts(c);
+        isLoaded = true;
 
-        for (int i=0; i<66; i++){
+/*        for (int i=0; i<66; i++){
             for (int j=0; j<chapterCount[i]; j++){
                 chapters[i][j]=loadChapter(i, j);
             }
-        }
+        }*/
 
-        isLoaded = true;
     }
 
     private void populateChapterCounts(Context c){
@@ -117,8 +115,10 @@ public class Bible implements IBible
 
     @Override
     public int getBookCount() {
-        return books.size();
+        return 66;
     }
+
+
 
     @Override
     public int getChapterCount(int book) {
@@ -135,372 +135,26 @@ public class Bible implements IBible
         return 0;
     }
 
-    public void setBookNames(String[] names) {
-        // TODO not used
-        for (int i=0; i<66; i++){
-            switch (i){
-                case 0: { chapterNames[i] = "Bilowgii"; break; }
-                case 1: { chapterNames[i] = "Baxniintii"; break; }
-                case 2: { chapterNames[i] = "Laawiyiintii"; break; }
-                case 3: { chapterNames[i] = "Tirintii"; break; }
-                case 4: { chapterNames[i] = "Sharciga Kunoqoshadiisa"; break; }
-                case 5: { chapterNames[i] = "Yashuuca"; break; }
-                case 6: { chapterNames[i] = "Xaakinnada"; break; }
-                case 7: { chapterNames[i] = "Ruud"; break; }
-                case 8: { chapterNames[i] = "Samuu'eel Kowaad"; break; }
-                case 9: { chapterNames[i] = "Samuu'eel Labaad"; break; }
-                case 10: { chapterNames[i] = "Boqorradii Kowaad"; break; }
-                case 11: { chapterNames[i] = "Boqorradii Labaad"; break; }
-                case 12: { chapterNames[i] = "Taariikhdii Kowaad"; break; }
-                case 13: { chapterNames[i] = "Taariikhdii Labaad"; break; }
-                case 14: { chapterNames[i] = "Cesraa"; break; }
-                case 15: { chapterNames[i] = "Nexemyaah"; break; }
-                case 16: { chapterNames[i] = "Esteer"; break; }
-                case 17: { chapterNames[i] = "Ayuub"; break; }
-                case 18: { chapterNames[i] = "Sabuurradii"; break; }
-                case 19: { chapterNames[i] = "Maahmaahyadii"; break; }
-                case 20: { chapterNames[i] = "Wacdiyahii"; break; }
-                case 21: { chapterNames[i] = "Gabaygii Sulaymaan"; break; }
-                case 22: { chapterNames[i] = "Ishacyaah"; break; }
-                case 23: { chapterNames[i] = "Yeremyaah"; break; }
-                case 24: { chapterNames[i] = "Baroorashadii Yeremyaah"; break; }
-                case 25: { chapterNames[i] = "Yexesqeel"; break; }
-                case 26: { chapterNames[i] = "Daanyeel"; break; }
-                case 27: { chapterNames[i] = "Hoosheeca"; break; }
-                case 28: { chapterNames[i] = "Yoo'eel"; break; }
-                case 29: { chapterNames[i] = "Caamoos"; break; }
-                case 30: { chapterNames[i] = "Cobadyaah"; break; }
-                case 31: { chapterNames[i] = "Yoonis"; break; }
-                case 32: { chapterNames[i] = "Miikaah"; break; }
-                case 33: { chapterNames[i] = "Naxuum"; break; }
-                case 34: { chapterNames[i] = "Xabaquuq"; break; }
-                case 35: { chapterNames[i] = "Sefanyaah"; break; }
-                case 36: { chapterNames[i] = "Xaggay"; break; }
-                case 37: { chapterNames[i] = "Sekaryaah"; break; }
-                case 38: { chapterNames[i] = "Malaakii"; break; }
-                case 39: { chapterNames[i] = "Matayos"; break; }
-                case 40: { chapterNames[i] = "Markos"; break; }
-                case 41: { chapterNames[i] = "Luukos"; break; }
-                case 42: { chapterNames[i] = "Yooxanaa"; break; }
-                case 43: { chapterNames[i] = "Falimaha Rasuullada"; break; }
-                case 44: { chapterNames[i] = "Rooma"; break; }
-                case 45: { chapterNames[i] = "1 Korintos"; break; }
-                case 46: { chapterNames[i] = "2 Korintos"; break; }
-                case 47: { chapterNames[i] = "Galatiya"; break; }
-                case 48: { chapterNames[i] = "Efesos"; break; }
-                case 49: { chapterNames[i] = "Filiboy"; break; }
-                case 50: { chapterNames[i] = "Kolosay"; break; }
-                case 51: { chapterNames[i] = "1 Tesaloniika"; break; }
-                case 52: { chapterNames[i] = "2 Tesaloniika"; break; }
-                case 53: { chapterNames[i] = "1 Timoteyos"; break; }
-                case 54: { chapterNames[i] = "2 Timoteyos"; break; }
-                case 55: { chapterNames[i] = "Tiitos"; break; }
-                case 56: { chapterNames[i] = "Filemon"; break; }
-                case 57: { chapterNames[i] = "Cibraaniyada"; break; }
-                case 58: { chapterNames[i] = "Yacquub"; break; }
-                case 59: { chapterNames[i] = "1 Butros"; break; }
-                case 60: { chapterNames[i] = "2 Butros"; break; }
-                case 61: { chapterNames[i] = "1 Yooxanaa"; break; }
-                case 62: { chapterNames[i] = "2 Yooxanaa"; break; }
-                case 63: { chapterNames[i] = "3 Yooxanaa"; break; }
-                case 64: { chapterNames[i] = "Yuudas"; break; }
-                case 65: { chapterNames[i] = "Muujintii"; break; }
-                default: break;
-            }
-        }
-        chapterNames = names;
-    }
 
-    public void setAbbrevs(String[] abbrevs) {
-        // TODO not used
-        for (int i=0; i<66; i++) {
-            switch (i) {
-                case 0: {
-                    abbrevs[i] = "Bil";
-                    break;
-                }
-                case 1: {
-                    abbrevs[i] = "Bax";
-                    break;
-                }
-                case 2: {
-                    abbrevs[i] = "Laaw";
-                    break;
-                }
-                case 3: {
-                    abbrevs[i] = "Tir";
-                    break;
-                }
-                case 4: {
-                    abbrevs[i] = "Sharc";
-                    break;
-                }
-                case 5: {
-                    abbrevs[i] = "Yash";
-                    break;
-                }
-                case 6: {
-                    abbrevs[i] = "Xaak";
-                    break;
-                }
-                case 7: {
-                    abbrevs[i] = "Ru";
-                    break;
-                }
-                case 8: {
-                    abbrevs[i] = "1 Sa";
-                    break;
-                }
-                case 9: {
-                    abbrevs[i] = "2 Sa";
-                    break;
-                }
-                case 10: {
-                    abbrevs[i] = "1 Bq";
-                    break;
-                }
-                case 11: {
-                    abbrevs[i] = "2 Bq";
-                    break;
-                }
-                case 12: {
-                    abbrevs[i] = "1 Tar";
-                    break;
-                }
-                case 13: {
-                    abbrevs[i] = "2 Tar";
-                    break;
-                }
-                case 14: {
-                    abbrevs[i] = "Ces";
-                    break;
-                }
-                case 15: {
-                    abbrevs[i] = "Nex";
-                    break;
-                }
-                case 16: {
-                    abbrevs[i] = "Es";
-                    break;
-                }
-                case 17: {
-                    abbrevs[i] = "Ay";
-                    break;
-                }
-                case 18: {
-                    abbrevs[i] = "Sab";
-                    break;
-                }
-                case 19: {
-                    abbrevs[i] = "Maa";
-                    break;
-                }
-                case 20: {
-                    abbrevs[i] = "Wac";
-                    break;
-                }
-                case 21: {
-                    abbrevs[i] = "Gaba";
-                    break;
-                }
-                case 22: {
-                    abbrevs[i] = "Ish";
-                    break;
-                }
-                case 23: {
-                    abbrevs[i] = "Yer";
-                    break;
-                }
-                case 24: {
-                    abbrevs[i] = "Baro";
-                    break;
-                }
-                case 25: {
-                    abbrevs[i] = "Yex";
-                    break;
-                }
-                case 26: {
-                    abbrevs[i] = "Daa";
-                    break;
-                }
-                case 27: {
-                    abbrevs[i] = "Hoo";
-                    break;
-                }
-                case 28: {
-                    abbrevs[i] = "Yoo";
-                    break;
-                }
-                case 29: {
-                    abbrevs[i] = "Caa";
-                    break;
-                }
-                case 30: {
-                    abbrevs[i] = "Cob";
-                    break;
-                }
-                case 31: {
-                    abbrevs[i] = "Yoon";
-                    break;
-                }
-                case 32: {
-                    abbrevs[i] = "Miik";
-                    break;
-                }
-                case 33: {
-                    abbrevs[i] = "Nax";
-                    break;
-                }
-                case 34: {
-                    abbrevs[i] = "Xab";
-                    break;
-                }
-                case 35: {
-                    abbrevs[i] = "Sef";
-                    break;
-                }
-                case 36: {
-                    abbrevs[i] = "Xag";
-                    break;
-                }
-                case 37: {
-                    abbrevs[i] = "Sek";
-                    break;
-                }
-                case 38: {
-                    abbrevs[i] = "Mal";
-                    break;
-                }
-                case 39: {
-                    abbrevs[i] = "Mat";
-                    break;
-                }
-                case 40: {
-                    abbrevs[i] = "Mar";
-                    break;
-                }
-                case 41: {
-                    abbrevs[i] = "Luu";
-                    break;
-                }
-                case 42: {
-                    abbrevs[i] = "Yoox";
-                    break;
-                }
-                case 43: {
-                    abbrevs[i] = "Fal";
-                    break;
-                }
-                case 44: {
-                    abbrevs[i] = "Roo";
-                    break;
-                }
-                case 45: {
-                    abbrevs[i] = "1 Ko";
-                    break;
-                }
-                case 46: {
-                    abbrevs[i] = "2 Ko";
-                    break;
-                }
-                case 47: {
-                    abbrevs[i] = "Gal";
-                    break;
-                }
-                case 48: {
-                    abbrevs[i] = "Efe";
-                    break;
-                }
-                case 49: {
-                    abbrevs[i] = "Fil";
-                    break;
-                }
-                case 50: {
-                    abbrevs[i] = "Kol";
-                    break;
-                }
-                case 51: {
-                    abbrevs[i] = "1 Tes";
-                    break;
-                }
-                case 52: {
-                    abbrevs[i] = "2 Tes";
-                    break;
-                }
-                case 53: {
-                    abbrevs[i] = "1 Ti";
-                    break;
-                }
-                case 54: {
-                    abbrevs[i] = "2 Ti";
-                    break;
-                }
-                case 55: {
-                    abbrevs[i] = "Tiit";
-                    break;
-                }
-                case 56: {
-                    abbrevs[i] = "Fil";
-                    break;
-                }
-                case 57: {
-                    abbrevs[i] = "Cib";
-                    break;
-                }
-                case 58: {
-                    abbrevs[i] = "Yac";
-                    break;
-                }
-                case 59: {
-                    abbrevs[i] = "1 Bu";
-                    break;
-                }
-                case 60: {
-                    abbrevs[i] = "2 Bu";
-                    break;
-                }
-                case 61: {
-                    abbrevs[i] = "1 Yo";
-                    break;
-                }
-                case 62: {
-                    abbrevs[i] = "2 Yo";
-                    break;
-                }
-                case 63: {
-                    abbrevs[i] = "3 Yo";
-                    break;
-                }
-                case 64: {
-                    abbrevs[i] = "Yuu";
-                    break;
-                }
-                case 65: {
-                    abbrevs[i] = "Muuj";
-                    break;
-                }
-                default:
-                    break;
-            }
-        }
-        this.chapterAbbrevs = abbrevs;
-
-    }
 
     @Override
     public String getBookName(int chapter) {
-        return books.get(chapter).name;
+        return bookNames[chapter];
+        //return books.get(chapter).name;
     }
 
     @Override
     public String getBookAbbrev(int chapter) {
-        return books.get(chapter).abbr;
+
+        return bookAbbrevs[chapter];
+        //return books.get(chapter).abbr;
     }
 
 
 
     @Override
     public String getChapterVerses(int bookNumber, int chapter) {
+        chapters[bookNumber][chapter]=loadChapter(bookNumber, chapter);
         return chapters[bookNumber][chapter];
     }
 
@@ -527,7 +181,164 @@ public class Bible implements IBible
     }
 
     List<Book> books;
+
+
+    private void setupAbbrevs(){
+        bookAbbrevs[0] = "Bil";
+        bookAbbrevs[1] = "Bax";
+        bookAbbrevs[2] = "Laaw";
+        bookAbbrevs[3] = "Tir";
+        bookAbbrevs[4] = "Shar";
+        bookAbbrevs[5] = "Yash";
+        bookAbbrevs[6] = "Xaak";
+        bookAbbrevs[7] = "Ru";
+        bookAbbrevs[8] = "1 Sa";
+        bookAbbrevs[9] = "2 Sa";
+
+        bookAbbrevs[10] = "1 Bq";
+        bookAbbrevs[11] = "2 Bq";
+        bookAbbrevs[12] = "1 Ta";
+        bookAbbrevs[13] = "2 Ta";
+        bookAbbrevs[14] = "Ces";
+        bookAbbrevs[15] = "Nex";
+        bookAbbrevs[16] = "Es";
+        bookAbbrevs[17] = "Ay";
+        bookAbbrevs[18] = "Sab";
+        bookAbbrevs[19] = "Maa";
+
+        bookAbbrevs[20] = "Wac";
+        bookAbbrevs[21] = "Gab";
+        bookAbbrevs[22] = "Ish";
+        bookAbbrevs[23] = "Yer";
+        bookAbbrevs[24] = "Bar";
+        bookAbbrevs[25] = "Yex";
+        bookAbbrevs[26] = "Daan";
+        bookAbbrevs[27] = "Hoo";
+        bookAbbrevs[28] = "Yns";
+        bookAbbrevs[29] = "Caa";
+
+        bookAbbrevs[30] = "Cob";
+        bookAbbrevs[31] = "Yoon";
+        bookAbbrevs[32] = "Miik";
+        bookAbbrevs[33] = "Nax";
+        bookAbbrevs[34] = "Xab";
+        bookAbbrevs[35] = "Sef";
+        bookAbbrevs[36] = "Xag";
+        bookAbbrevs[37] = "Sek";
+        bookAbbrevs[38] = "Mal";
+        bookAbbrevs[39] = "Mat";
+
+        bookAbbrevs[40] = "Mar";
+        bookAbbrevs[41] = "Lu";
+        bookAbbrevs[42] = "Yoox";
+        bookAbbrevs[43] = "Fal";
+        bookAbbrevs[44] = "Roo";
+        bookAbbrevs[45] = "1 Ko";
+        bookAbbrevs[46] = "2 Ko";
+        bookAbbrevs[47] = "Ga";
+        bookAbbrevs[48] = "Ef";
+        bookAbbrevs[49] = "Fil";
+
+        bookAbbrevs[50] = "Kol";
+        bookAbbrevs[51] = "1 Te";
+        bookAbbrevs[52] = "2 Te";
+        bookAbbrevs[53] = "1 Ti";
+        bookAbbrevs[54] = "2 Ti";
+        bookAbbrevs[55] = "Tii";
+        bookAbbrevs[56] = "Fil";
+        bookAbbrevs[57] = "Cib";
+        bookAbbrevs[58] = "Yac";
+        bookAbbrevs[59] = "1 Bu";
+
+        bookAbbrevs[60] = "2 Bu";
+        bookAbbrevs[61] = "1 Yo";
+        bookAbbrevs[62] = "2 Yo";
+        bookAbbrevs[63] = "3 Yo";
+        bookAbbrevs[64] = "Yuu";
+        bookAbbrevs[65] = "Muuj";
+    }
+
     private void setupBooks() {
+
+        setupAbbrevs();
+
+        bookNames[0] = "Bilowgii";
+        bookNames[1] = "Baxniintii";
+        bookNames[2] = "Laawiyiintii";
+        bookNames[3] = "Tirintii";
+        bookNames[4] = "Sharciga Kunoqoshadiisa";
+        bookNames[5] = "Yashuuca";
+        bookNames[6] = "Xaakinnada";
+        bookNames[7] = "Ruud";
+        bookNames[8] = "Samuu'eel Kowaad";
+        bookNames[9] = "Samuu'eel Labaad";
+
+        bookNames[10] = "Boqorradii Kowaad";
+        bookNames[11] = "Boqorradii Labaad";
+        bookNames[12] = "Taariikhdii Kowaad";
+        bookNames[13] = "Taariikhdii Labaad";
+        bookNames[14] = "Cesraa";
+        bookNames[15] = "Nexemyaah";
+        bookNames[16] = "Esteer";
+        bookNames[17] = "Ayuub";
+        bookNames[18] = "Sabuurradii";
+        bookNames[19] = "Maahmaahyadii";
+
+        bookNames[20] = "Wacdiyahii";
+        bookNames[21] = "Gabaygii Sulaymaan";
+        bookNames[22] = "Ishacyaah";
+        bookNames[23] = "Yeremyaah";
+        bookNames[24] = "Baroorashadii Yeremyaah";
+        bookNames[25] = "Yexesqeel";
+        bookNames[26] = "Daanyeel";
+        bookNames[27] = "Hoosheeca";
+        bookNames[28] = "Yoo'eel";
+        bookNames[29] = "Caamoos";
+
+        bookNames[30] = "Cobadyaah";
+        bookNames[31] = "Yoonis";
+        bookNames[32] = "Miikaah";
+        bookNames[33] = "Naxuum";
+        bookNames[34] = "Xabaquuq";
+        bookNames[35] = "Sefanyaah";
+        bookNames[36] = "Xaggay";
+        bookNames[37] = "Sekaryaah";
+        bookNames[38] = "Malaakii";
+        bookNames[39] = "Matayos";
+
+        bookNames[40] = "Markos";
+        bookNames[41] = "Luukos";
+        bookNames[42] = "Yooxanaa";
+        bookNames[43] = "Falimaha Rasuullada";
+        bookNames[44] = "Rooma";
+        bookNames[45] = "1 Korintos";
+        bookNames[46] = "2 Korintos";
+        bookNames[47] = "Galatiya";
+        bookNames[48] = "Efesos";
+        bookNames[49] = "Filiboy";
+
+        bookNames[50] = "Kolosay";
+        bookNames[51] = "1 Tesaloniika";
+        bookNames[52] = "2 Tesaloniika";
+        bookNames[53] = "1 Timoteyos";
+        bookNames[54] = "2 Timoteyos";
+        bookNames[55] = "Tiitos";
+        bookNames[56] = "Filemon";
+        bookNames[57] = "Cibraaniyada";
+        bookNames[58] = "Yacquub";
+        bookNames[59] = "1 Butros";
+
+        bookNames[60] = "2 Butros";
+        bookNames[61] = "1 Yooxanaa";
+        bookNames[62] = "2 Yooxanaa";
+        bookNames[63] = "3 Yooxanaa";
+        bookNames[64] = "Yuudas";
+        bookNames[65] = "Muujintii";
+
+
+
+
+        /*
         books = new ArrayList<>(66);
         books.add(new Book(0,"Bilowgii","Bil"));
         books.add(new Book(1,"Baxniintii","Bax"));
@@ -594,6 +405,6 @@ public class Bible implements IBible
         books.add(new Book(62,"2 Yooxanaa","2 Yo"));
         books.add(new Book(63,"3 Yooxanaa","3 Yo"));
         books.add(new Book(64,"Yuudas","Yuu"));
-        books.add(new Book(65,"Muujintii","Muuj"));
+        books.add(new Book(65,"Muujintii","Muuj"));*/
     }
 }

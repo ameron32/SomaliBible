@@ -2,35 +2,44 @@ package com.ameron32.apps.somalibible.ui.verse;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.Spanned;
-import android.text.SpannedString;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.ameron32.apps.somalibible.MainActivity;
 import com.ameron32.apps.somalibible.R;
 import com.ameron32.apps.somalibible.frmk.BibleProvider;
 import com.ameron32.apps.somalibible.frmk.BibleReceiver;
 import com.ameron32.apps.somalibible.frmk.IBible;
 import com.ameron32.apps.somalibible.frmk.NavigationListener;
 import com.ameron32.apps.somalibible.frmk.NavigationRequestor;
-import com.ameron32.apps.somalibible.ui.book.BookAdapter;
+import com.ameron32.apps.somalibible.util.OnSwipeTouchListener;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ChapterDisplayFragment extends Fragment
-    implements NavigationRequestor, BibleReceiver {
+        implements NavigationRequestor, BibleReceiver {
 
 
   private static final String BOOK_KEY = "bookOrdinal";
   private static final String CHAPTER_KEY = "chapter";
+
 
   private int book;
   private int chapter;
@@ -54,6 +63,7 @@ public class ChapterDisplayFragment extends Fragment
   @Override
   public void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    setHasOptionsMenu(true);
     if (getArguments() != null) {
       final Bundle args = getArguments();
       // restore args
@@ -66,14 +76,57 @@ public class ChapterDisplayFragment extends Fragment
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
+
+    View v = inflater.inflate(R.layout.fragment_chapter_display, container, false);
+    v.setOnTouchListener(new OnSwipeTouchListener(getContext()) {
+
+      @Override
+      public void onSwipeRight() {
+        //Going backwards
+        if ((chapter == 0) && (book>0)){
+          book = book -1;
+          chapter = bible.getChapterCount(book)-1;
+          //Toast.makeText(getContext(), "Flipping...", Toast.LENGTH_SHORT).show();
+        }else{
+          if (book >0)
+            chapter = chapter -1;
+          //Toast.makeText(getContext(), "Flipping...", Toast.LENGTH_SHORT).show();
+        }
+        ((MainActivity)getActivity()).setActionBarTitle(bible.getBookName(book)+ " "+ String.valueOf(chapter+1));
+        text.setText(new SpannableStringBuilder(getChapterString()));
+      }
+
+
+      @Override
+      public void onSwipeLeft() {
+        int max = bible.getChapterCount(book);
+        if ((chapter == max-1)&&(book<65)){
+          book = book +1;
+          chapter = 0;
+          //Toast.makeText(getContext(), "Flipping...", Toast.LENGTH_SHORT).show();
+        }else{
+          if (chapter <max -1)
+            chapter = chapter +1;
+          //Toast.makeText(getContext(), "Flipping...", Toast.LENGTH_SHORT).show();
+        }
+        ((MainActivity)getActivity()).setActionBarTitle(bible.getBookName(book)+ " "+ String.valueOf(chapter+1));
+        text.setText(new SpannableStringBuilder(getChapterString()));
+      }
+
+    });
+
+
     // Inflate the layout for this fragment
-    return inflater.inflate(R.layout.fragment_chapter_display, container, false);
+    return v;
   }
 
   @Override
   public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     text = (TextView) view.findViewById(R.id.text);
+    int size = getActivity().getPreferences(Context.MODE_PRIVATE).getInt(getString(R.string.text_size), 0);
+    text.setTextSize(size);
+
   }
 
   @Override
@@ -93,7 +146,7 @@ public class ChapterDisplayFragment extends Fragment
   public void onAttach(Context context) {
     super.onAttach(context);
     if (context instanceof NavigationListener
-        && context instanceof BibleProvider) {
+            && context instanceof BibleProvider) {
       navigationListener = (NavigationListener) context;
       bibleProvider = (BibleProvider) context;
     } else {
@@ -118,7 +171,62 @@ public class ChapterDisplayFragment extends Fragment
   public void passBible(IBible bible) {
     this.bible = bible;
     if (text != null) {
-      text.setText(getChapterString());
+      SpannableStringBuilder ssb = new SpannableStringBuilder(getChapterString());
+      text.setText(ssb);
+    }
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.action_settings:
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        SharedPreferences prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
+
+        builder.setTitle(R.string.dialog_title).setSingleChoiceItems(R.array.sizes_array, prefs.getInt(getString(R.string.text_selection), 0), new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+            SharedPreferences prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor e = prefs.edit();
+
+            switch (which){
+              case 0:{
+                text.setTextSize(12);
+                e.putInt(getString(R.string.text_size), 12);
+                e.putInt(getString(R.string.text_selection), 0);
+                break;
+              }
+              case 1:{
+                text.setTextSize(16);
+                e.putInt(getString(R.string.text_size), 16);
+                e.putInt(getString(R.string.text_selection), 1);
+                break;
+              }
+              case 2:{
+                text.setTextSize(24);
+                e.putInt(getString(R.string.text_size), 24);
+                e.putInt(getString(R.string.text_selection), 2);
+                break;
+              }
+              case 3:{
+                text.setTextSize(40);
+                e.putInt(getString(R.string.text_size), 40);
+                e.putInt(getString(R.string.text_selection), 3);
+                break;
+              }
+            }
+            e.commit();
+          }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        return true;
+      default:
+        // If we got here, the user's action was not recognized.
+        // Invoke the superclass to handle it.
+        return super.onOptionsItemSelected(item);
+
     }
   }
 }

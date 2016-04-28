@@ -4,4 +4,9 @@
 
   <!-- TODO: Remove or change this placeholder text -->
   <string name="hello_blank_fragment">Hello blank fragment</string>
+  <string name="dialog_message">Select Text Size</string>
+  <string name="dialog_title">Choose Text Size</string>
+  <string name="text_size">text_size</string>
+  <string name="text_selection">text_selection</string>
+  <string name="text_prefs">text_prefs</string>
 </resources>
