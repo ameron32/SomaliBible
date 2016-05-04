@@ -28,12 +28,12 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHold
   @Override
   public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
     return new ViewHolder(LayoutInflater.from(parent.getContext())
-        .inflate(R.layout.item_chapter, parent, false));
+            .inflate(R.layout.item_chapter, parent, false));
   }
 
   @Override
   public void onBindViewHolder(ViewHolder holder, final int position) {
-    holder.text.setText(position + ""); // TODO tablet v. phone
+    holder.text.setText(position+1 + ""); // TODO tablet v. phone
     holder.itemView.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
